@@ -16,24 +16,24 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword =$request->keyword;
+        $keyword = $request->keyword;
 
-       if ($request->category !== null) {
-        $products = Product::where('category_id',$request->category)->sortable()->paginate(15);
-        $total_count = Product::where('category_id', $request->category)->count();
-        $category =Category::find($request->category);
-        $major_category = MajorCategory::find($category->major_category_id);
+        if ($request->category !== null) {
+            $products = Product::where('category_id', $request->category)->sortable()->paginate(15);
+            $total_count = Product::where('category_id', $request->category)->count();
+            $category = Category::find($request->category);
+            $major_category = MajorCategory::find($category->major_category_id);
         } elseif ($keyword !== null) {
-        $products = Product::where('name', 'like', "%{$keyword}%")->sortable()->paginate(15);
-        $total_count = $products->total();
-        $category = null;
-        $major_category = null;
-       } else {
-        $products = Product::sortable()->paginate(15);
-        $total_count = "";
-        $category =null;
-        $major_category = null;
-       }
+            $products = Product::where('name', 'like', "%{$keyword}%")->sortable()->paginate(15);
+            $total_count = $products->total();
+            $category = null;
+            $major_category = null;
+        } else {
+            $products = Product::sortable()->paginate(15);
+            $total_count = "";
+            $category = null;
+            $major_category = null;
+        }
         $categories = Category::all();
         $major_categories = MajorCategory::all();
 
@@ -61,14 +61,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $product = new Product();
-        $product->name =$request->input('name');
-        $product->description =$request->input('description');
-        $product->price =$request->input('price');
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
         $product->category_id = $request->input('category_id');
         $product->save();
 
         return to_route('products.index');
-        
     }
 
     /**
@@ -80,8 +79,8 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $reviews = $product->reviews()->get();
-  
-         return view('products.show', compact('product', 'reviews'));
+
+        return view('products.show', compact('product', 'reviews'));
     }
 
     /**
@@ -94,7 +93,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
-        return view('products.edit', compact('product','categories'));
+        return view('products.edit', compact('product', 'categories'));
     }
 
     /**

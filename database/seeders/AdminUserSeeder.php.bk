@@ -1,0 +1,46 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Auth\Database\Permission;
+use Encore\Admin\Auth\Database\Role;
+
+
+
+class AdminUserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        Administrator::create([
+            'username' => 'admin',
+            'password' => Hash::make('admin'),
+            'name'     => 'administrator',
+        ]);
+        $role = Role::firstOrCreate(
+            ['name' => 'administrator'],
+           // ['display_name' => 'Administrator']
+        );
+              // 全てのパーミッションを取得
+        $permissions = Permission::all();
+
+        // ロールにパーミッションを割り当て
+        $role->permissions()->sync($permissions);
+
+        $user = Administrator::firstOrNew(
+            ['name' => 'administer']
+        );
+
+        // ユーザーに管理者ロールを割り当て
+        $user->roles()->syncWithoutDetaching([$role->id]);
+
+
+    }
+}
