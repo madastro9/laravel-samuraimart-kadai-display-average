@@ -25,7 +25,7 @@ Route::get('/',  [WebController::class, 'index'])->name('top');
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('products', ProductController::class);
@@ -41,7 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('users/mypage', 'update')->name('mypage.update');
         Route::get('users/mypage/password/edit', 'edit_password')->name('mypage.edit_password');
         Route::put('users/mypage/password', 'update_password')->name('mypage.update_password');
-        Route::get('users/mypage/favorite', 'favorite')->name('mypage.favorite'); 
+        Route::get('users/mypage/favorite', 'favorite')->name('mypage.favorite');
         Route::delete('users/mypage/delete', 'destroy')->name('mypage.destroy');
         Route::get('users/mypage/cart_history', 'cart_history_index')->name('mypage.cart_history');
         Route::get('users/mypage/cart_history/{num}', 'cart_history_show')->name('mypage.cart_history_show');
